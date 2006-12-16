@@ -1,0 +1,7 @@
+#summary The edit() function
+
+The edit function allows you to edit pages on the currently-set wiki.
+
+{{{
+$perlwikipedia_object->edit($pagename,$new_text,$edit_summary);
+}}}
