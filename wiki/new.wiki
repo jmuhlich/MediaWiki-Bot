@@ -1,0 +1,6 @@
+#summary Documentation of the new() function
+
+The new() method allows you to create a new perlwikipedia object. It is used like this:
+{{{
+my $object=Perlwikipedia->new;
+}}}
