@@ -1,0 +1,8 @@
+#summary The login() function
+
+The login method allows you to log-in to the currently-set wiki. You can call it like this:
+
+{{{
+$perlwikipedia_object->login($username,$password);
+}}}
+Note that only alphanumeric characters are supported right now.
