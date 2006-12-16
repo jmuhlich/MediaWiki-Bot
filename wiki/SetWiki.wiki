@@ -1,0 +1,8 @@
+#summary The set_wiki function
+
+set_wiki allows you to choose which wiki you'll be working with. By default, the wiki is
+set to 'en.wikipedia.org' with a path of 'w'.
+
+{{{
+$perlwikipedia_object->set_wiki('de.wikipedia.org','w');
+}}}
