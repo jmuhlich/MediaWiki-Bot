@@ -14,7 +14,7 @@ $editor->set_wiki('de.wikipedia.org','w'); #Set the current wiki to de.wikipedia
 which                     
                                            uses 'w' as its path
                                            (de.wikipedia.org/w/index.php)
-my $text=$editor->grab_text('Main Page'); #Pull the wikitext of the Main Page
+my $text=$editor->get_text('Main Page'); #Pull the wikitext of the Main Page
 }}}
 
 This is just a brief example of what perlwikipedia is capable of!
