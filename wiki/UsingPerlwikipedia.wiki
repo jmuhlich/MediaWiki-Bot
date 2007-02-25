@@ -20,9 +20,3 @@ $editor->set_wiki('de.wikipedia.org','w');
 #Pull the wikitext of the Main Page
 my $text=$editor->get_text('Main Page'); 
 }}}
-
-
-
-
-
-
