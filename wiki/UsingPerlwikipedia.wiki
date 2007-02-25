@@ -9,13 +9,13 @@ use Perlwikipedia; #Note that the 'p' is capitalized, due to Perl style
 #Create a Perlwikipedia object
 my $editor=Perlwikipedia->new(); 
 
+#Log in. If the language is not set as below it defaults to 'en' (English)
+$editor->login('perlwikipediabot','supersecretpassword'); 
+
 #Set the wiki language to 'de' (German)
 # Wikipedias in all languages use 'w' as the path                                           
 # (de.wikipedia.org/w/index.php)
 $editor->set_wiki('de.wikipedia.org','w'); 
-
-#Log in. If the language is not set as above it defaults to 'en' (English)
-$editor->login('perlwikipediabot','supersecretpassword'); 
 
 #Pull the wikitext of the Main Page
 my $text=$editor->get_text('Main Page'); 
