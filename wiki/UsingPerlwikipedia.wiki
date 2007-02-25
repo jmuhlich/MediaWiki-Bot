@@ -1,4 +1,4 @@
-#summary The introduction to perlwikipedia
+#summary Introduction to perlwikipedia
 
 
 = Example code =
@@ -6,15 +6,23 @@
 {{{
 use Perlwikipedia; #Note that the 'p' is capitalized, due to Perl style
 
-my $editor=Perlwikipedia->new(); #Create a Perlwikipedia object
+#Create a Perlwikipedia object
+my $editor=Perlwikipedia->new(); 
 
-$editor->login('perlwikipediabot','supersecretpassword'); #Logs into the English Wikipedia
+#Set the wiki language to 'de' (German)
+# Wikipedias in all languages use 'w' as the path                                           
+# (de.wikipedia.org/w/index.php)
+$editor->set_wiki('de.wikipedia.org','w'); 
 
-$editor->set_wiki('de.wikipedia.org','w'); #Set the current wiki to de.wikipedia.org,
-which                     
-                                           uses 'w' as its path
-                                           (de.wikipedia.org/w/index.php)
-my $text=$editor->get_text('Main Page'); #Pull the wikitext of the Main Page
+#Log in. If the language is not set as above it defaults to 'en' (English)
+$editor->login('perlwikipediabot','supersecretpassword'); 
+
+#Pull the wikitext of the Main Page
+my $text=$editor->get_text('Main Page'); 
 }}}
 
-This is just a brief example of what perlwikipedia is capable of!
+
+
+
+
+
