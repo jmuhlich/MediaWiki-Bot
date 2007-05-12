@@ -1,0 +1,3 @@
+==get_history($pagename,$limit)==
+
+Returns an array containing the history of the specified page in anonymous hashes, with $limit number of revisions. The hash structure is 'revid','oldid','user','comment','timestamp_date', and 'timestamp_time'.
