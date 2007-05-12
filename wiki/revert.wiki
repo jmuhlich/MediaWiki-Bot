@@ -1,0 +1,3 @@
+==revert($pagename,$edit_summary,$old_revision_id)==
+
+Reverts $pagename to $old_revision_id, with an edit summary of $edit_summary.
