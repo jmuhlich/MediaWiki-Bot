@@ -1,0 +1,19 @@
+#summary Analysis of the internal structure of Perlwikipedia objects
+
+When you initially create a Perlwikipedia object, the object contains some useful settings and internal objects that you can benefit from.
+
+For example, if you perform
+
+{{{
+$perlwikipedia_object->{debug}=1;
+}}}
+
+then the Perlwikipedia object will print out useful information, such as what page it's retrieving, the status of the login, etc.
+
+The object also contains an internal WWW::Mechanize object you can use, such as
+
+{{{
+$perlwikipedia_object->{mech}->get("http://en.wikipedia.org/wiki/Main_Page");
+}}}
+
+just as if you were using WWW::Mechanize.
