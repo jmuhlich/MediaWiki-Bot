@@ -1,8 +1,3 @@
-#summary The set_wiki function
+==set_wiki($wiki_host,$wiki_path)==
 
-set_wiki allows you to choose which wiki you'll be working with. By default, the wiki is
-set to 'en.wikipedia.org' with a path of 'w'.
-
-{{{
-$perlwikipedia_object->set_wiki('de.wikipedia.org','w');
-}}}
+set_wiki will cause the Perlwikipedia object to use the wiki specified, e.g set_wiki('de.wikipedia.org','w') will tell Perlwikipedia to use http://de.wikipedia.org/w/index.php. Perlwikipedia's default settings are 'en.wikipedia.org' with a path of 'w'.
