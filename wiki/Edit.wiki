@@ -1,7 +1,6 @@
-#summary The edit() function
+==edit($pagename,$page_text,$edit_summary,[$is_minor])==
 
-The edit function allows you to edit pages on the currently-set wiki.
+Edits the specified page $pagename and replaces it with $page_text with an edit summary of $edit_summary, optionally marking the edit as minor if specified.
 
-{{{
-$perlwikipedia_object->edit($pagename,$new_text,$edit_summary);
-}}}
+
+
