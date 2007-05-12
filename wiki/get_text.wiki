@@ -1,0 +1,3 @@
+==get_text($pagename,[$revid,$section_number])==
+
+Returns the text of the specified page. If $revid is defined, it will return the text of that revision; if $section_number is defined, it will return the text of that section.
