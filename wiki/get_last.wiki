@@ -1,0 +1,3 @@
+==get_last($pagename,$username)==
+
+Returns the number of the last revision of $pagename not made by $username.
