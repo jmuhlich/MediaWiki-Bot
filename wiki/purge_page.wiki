@@ -1,0 +1,3 @@
+==purge_page($pagename)==
+
+Purges the server's cache of $pagename.
