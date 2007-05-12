@@ -1,0 +1,3 @@
+==update_rc([$limit])==
+
+Returns an array containing the Recent Changes to the wiki's Main namespace as anonymous hashes. The hash structure is 'pagename', 'revid', and 'oldid'.
