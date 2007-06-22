@@ -35,7 +35,7 @@ $text = $text . "A test\n";
 my $edit_summary='A bot test';
 
 # Whether to check the minor edit box.
-# One has $is_minor=1 for minor edits. This argument is optional.
+# One has $is_minor == 1 for minor edits. This argument is optional.
 my $is_minor = 0;
 
 # Submit to Wikipedia.
@@ -47,4 +47,3 @@ print "Sleep 5\n";
 sleep 5;
 
 }}}
-
