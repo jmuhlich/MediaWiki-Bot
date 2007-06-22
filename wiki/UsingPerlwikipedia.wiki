@@ -1,4 +1,4 @@
-#summary Introduction to perlwikipedia
+#summary Introduction to perlwikipedia -- read this first
 
 = Example code =
 
