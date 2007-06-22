@@ -11,14 +11,17 @@ use strict; # 'strict' insists that all variables be declared
 # Note that the 'p' is capitalized, due to Perl style.
 use Perlwikipedia;
 
+# Username and password. 
+my $user = 'me'; my $pass = 'supersecretpassword';
+
 #Create a Perlwikipedia object
-my $editor=Perlwikipedia->new();
+my $editor=Perlwikipedia->new($user);
 
 # Turn debugging on, to see what the bot is doing
 $editor->{debug} = 1;
 
-#Log in. if the language is not set (see below) it defaults to 'en' (English)
-$editor->login('perlwikipediabot','supersecretpassword');
+#Log in. If the language is not set (see below) it defaults to 'en' (English).
+$editor->login($user, $pass);
 
 # Uncomment below to set the wiki language to 'de' (German)
 # Wikipedias in all languages use 'w' as the path:
@@ -30,7 +33,7 @@ my $article = "Wikipedia:Sandbox";
 my $text=$editor->get_text($article);
 
 # append something to the text
-$text = $text . "A test\n";
+$text = $text . "Experimenting a little bit...\n";
 
 my $edit_summary='A bot test';
 
