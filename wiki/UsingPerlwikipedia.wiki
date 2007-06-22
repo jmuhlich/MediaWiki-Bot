@@ -1,22 +1,50 @@
 #summary Introduction to perlwikipedia
 
-
 = Example code =
 
 {{{
-use Perlwikipedia; #Note that the 'p' is capitalized, due to Perl style
+
+#!/usr/bin/perl
+use strict; # 'strict' insists that all variables be declared
+
+# Call the Perlwikipedia module.
+# Note that the 'p' is capitalized, due to Perl style.
+use Perlwikipedia;
 
 #Create a Perlwikipedia object
-my $editor=Perlwikipedia->new(); 
+my $editor=Perlwikipedia->new();
 
-#Log in. If the language is not set (see below) it defaults to 'en' (English)
-$editor->login('perlwikipediabot','supersecretpassword'); 
+# Turn debugging on, to see what the bot is doing
+$editor->{debug} = 1;
 
-#Set the wiki language to 'de' (German)
-# Wikipedias in all languages use 'w' as the path                                           
+#Log in. if the language is not set (see below) it defaults to 'en' (English)
+$editor->login('perlwikipediabot','supersecretpassword');
+
+# Uncomment below to set the wiki language to 'de' (German)
+# Wikipedias in all languages use 'w' as the path:
 # (de.wikipedia.org/w/index.php)
-$editor->set_wiki('de.wikipedia.org','w'); 
+# $editor->set_wiki('de.wikipedia.org','w');
 
-#Pull the wikitext of the Main Page
-my $text=$editor->get_text('Main Page'); 
+#Pull the wikitext of the Wikipedia Sandbox
+my $article = "Wikipedia:Sandbox";
+my $text=$editor->get_text($article);
+
+# append something to the text
+$text = $text . "A test\n";
+
+my $edit_summary='A bot test';
+
+# Whether to check the minor edit box.
+# One has $is_minor=1 for minor edits. This argument is optional.
+my $is_minor = 0;
+
+# Submit to Wikipedia.
+# Note: This does not warn of edit conflicts, it just overwrites existing text.
+$editor->edit($article, $text, $edit_summary, $is_minor);
+
+# Take a break (frequent edits are forbidden per bot policy)
+print "Sleep 5\n";
+sleep 5;
+
 }}}
+
