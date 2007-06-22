@@ -2,5 +2,6 @@
 
 The new() method allows you to create a new perlwikipedia object. It is used like this:
 {{{
-my $object=Perlwikipedia->new;
+my $user='myusername';
+my $object=Perlwikipedia->new($user);
 }}}
