@@ -26,7 +26,7 @@ my $editor=Perlwikipedia->new($user);
 # Turn debugging on, to see what the bot is doing
 $editor->{debug} = 1;
 
-#Log in. If the language is not set (see below) it defaults to 'en' (English).
+#Log in. 
 $editor->login($user, $pass);
 
 #Pull the wikitext of the Wikipedia Sandbox
