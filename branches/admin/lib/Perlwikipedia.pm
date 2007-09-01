@@ -234,6 +234,7 @@ sub get_history {
     my $rvstartid = shift || '';
     my $direction = shift;
 
+	$pagename = uri_escape_utf8( $pagename );
     my @return;
     my @revisions;
 
@@ -350,6 +351,7 @@ sub get_last {
     my $editor   = shift;
 
     my $revertto = 0;
+	$pagename = uri_escacpe_utf8( $pagename );
 
     my $res =
       $self->_get_api(
@@ -409,6 +411,8 @@ sub what_links_here {
     my $self    = shift;
     my $article = shift;
     my @links;
+
+	$article = uri_escape_utf8( $article );
 
     my $res =
       $self->_get( 'Special:Whatlinkshere', 'view',
@@ -554,6 +558,19 @@ sub get_namespace_names {
 		$return{$id} = $xml->{query}->{namespaces}->{ns}->{$id}->{content};
 	}
 	return %return;
+}
+
+sub delete {
+	my $self = shift;
+	my ( $page, $reason ) = @_;
+	my $delete_form = $self->_get( $page, 'delete', "&wpReason=$reason", 1 );
+	if( $delete_form->decoded_content =~ m/Could not delete/ ) {
+		$self->{errstr} = "Page \"$page\" has already been deleted or does not exist";
+		return 1;
+	}
+	$self->{mech}->submit;
+	print "Deleted $page because \"$reason\"\n" if $self->{debug};
+	return 0;
 }
 
 1;
