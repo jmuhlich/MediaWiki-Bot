@@ -254,7 +254,7 @@ sub get_history {
 
     unless ($res) { return 1; }
     my $xml = XMLin( $res->decoded_content );
-
+	unless( $xml ) { return; }
     if ( ref( $xml->{query}->{pages}->{page}->{revisions}->{rev} ) eq "HASH" ) {
     	$revisions[0] = $xml->{query}->{pages}->{page}->{revisions}->{rev};
     }
@@ -559,6 +559,11 @@ sub get_namespace_names {
 	}
 	return %return;
 }
+=item delete( $page, $reason )
+
+Deletes the specified page $page with reason $reason
+
+=cut
 
 sub delete {
 	my $self = shift;
@@ -571,6 +576,26 @@ sub delete {
 	$self->{mech}->submit;
 	print "Deleted $page because \"$reason\"\n" if $self->{debug};
 	return 0;
+}
+
+sub block {
+    my $self    = shift;
+	my $user    = shift;
+	my $length  = shift;
+	my $summary = shift;
+	my $res     = $self->_get( "Special:Blockip/$user" );
+	unless ($res) { return; }
+	my $options = {
+		fields    => {
+			wpBlockAddress  => $user,
+			wpBlockExpiry  => 'other',
+			wpAnonOnly  => undef,
+			wpBlockReason  => $summary,
+			wpBlockOther  => $length,
+		},
+	};
+	$res = $self->{mech}->submit_form( %{$options});
+	return $res;
 }
 
 1;
