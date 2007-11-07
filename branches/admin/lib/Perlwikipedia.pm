@@ -571,10 +571,11 @@ sub delete {
 	my $delete_form = $self->_get( $page, 'delete', "&wpReason=$reason", 1 );
 	if( $delete_form->decoded_content =~ m/Could not delete/ ) {
 		$self->{errstr} = "Page \"$page\" has already been deleted or does not exist";
+		print $self->{errstr}."\n" if $self->{debug};
 		return 1;
 	}
 	$self->{mech}->submit;
-	print "Deleted $page because \"$reason\"\n" if $self->{debug};
+	print "Deleted $page with reason \"$reason\"\n" if $self->{debug};
 	return 0;
 }
 
@@ -583,19 +584,65 @@ sub block {
 	my $user    = shift;
 	my $length  = shift;
 	my $summary = shift;
-	my $res     = $self->_get( "Special:Blockip/$user" );
+	my $opref   = shift;
+	my %options = %{ $opref };
+	if(! exists $options{AnonOnly}) {
+		$options{AnonOnly} = 1;
+	}
+    if(! exists $options{DenyAccountCreation}) {
+        $options{DenyAccountCreation} = 1;
+    }
+    if(! exists $options{EnableAutoblock}) {
+        $options{EnableAutoblock} = 1;
+    }
+	if(! exists $options{EmailBan}) {
+		$options{EmailBan} = 1;
+	}
+
+	my $res     = $self->_get( "Special:Blockip/$user", "view", "&wpAnonOnly=$options{AnonOnly}&wpCreateAccount=$options{DenyAccountCreation}&wpEnableAutoblock=$options{EnableAutoblock}&wpEmailBan=$options{EmailBan}");
 	unless ($res) { return; }
-	my $options = {
-		fields    => {
-			wpBlockAddress  => $user,
-			wpBlockExpiry  => 'other',
-			wpAnonOnly  => undef,
-			wpBlockReason  => $summary,
-			wpBlockOther  => $length,
-		},
-	};
-	$res = $self->{mech}->submit_form( %{$options});
-	return $res;
+
+	$res = $self->{mech}->submit_form( fields => {
+											wpBlockAddress => $user,
+											wpBlockExpiry  => 'other',
+											wpBlockReason  => $summary,
+											wpBlockOther   => $length
+										}
+	);
+
+	if ( $res->decoded_content =~ m{<div id="contentSub">Block successful</div>} ) {
+		print "Blocked $user for $length with reason '$summary' (AnonOnly=$options{AnonOnly},DenyAccountCreation=$options{DenyAccountCreation},EnableAutoblock=$options{EnableAutoblock},EmailBan=$options{EmailBan})\n" if $self->{debug};
+		return 0;
+	}
+	elsif( $res->decoded_content =~ m/div class="alreadyblocked"/ ) {
+		$self->{errstr} = "Cannot block $user: User is already blocked";
+		print $self->{errstr}."\n" if $self->{debug};
+		return 1;
+	}
+}
+
+sub unblock {
+	my $self = shift;
+	my $user = shift;
+	my $reason = shift;
+
+	my $res = $self->_get( "Special:Ipblocklist", "view", "&action=unblock" );
+	unless( $res ) { return; }
+
+	$res = $self->{mech}->submit_form( fields => {
+											wpUnblockAddress => $user,
+											wpUnblockReason  => $reason
+										}
+	);
+	if( $res->decoded_content =~ m/<div id="contentSub">.+has been unblocked/ ) {
+		print "Unblocked $user with reason '$reason'\n" if $self->{debug};
+		return 0;
+	}
+	elsif( $res->decoded_content =~ m/<span class="error">Error: Block ID  not found/ ) {
+		$self->{errstr} = "Could not unblock $user: User is not blocked";
+		print $self->{errstr}."\n" if $self->{debug};
+		return 1;
+	}
 }
 
 1;
