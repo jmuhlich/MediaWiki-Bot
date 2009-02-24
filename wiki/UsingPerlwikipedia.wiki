@@ -1,4 +1,5 @@
 #summary Introduction to perlwikipedia -- read this first
+#labels Phase-Deploy,Phase-Support,Featured
 
 = Example code =
 
@@ -51,3 +52,5 @@ print "Sleep 5\n";
 sleep 5;
 
 }}}
+
+Visit #perlwikipedia on irc.freenode.net for support.
