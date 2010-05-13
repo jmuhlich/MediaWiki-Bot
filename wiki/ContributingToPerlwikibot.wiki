@@ -40,12 +40,12 @@ Ask ST47 for commit access
 === Checkout ===
 Find instructions at [https://code.google.com/p/perlwikipedia/source/checkout].
 {{{
-user@host:~$ svn checkout http://perlwikipedia.googlecode.com/svn/trunk/ perlwikibot
+user@host:~$ svn checkout http://perlwikipedia.googlecode.com/svn/ perlwikibot
 }}}
 === Commit ===
 Find instructions at [https://code.google.com/p/perlwikipedia/source/checkout]. Your password is available on the _Settings_ tab of your _Profile_ page (link in top-right corner).
 {{{
-user@host:~$ svn checkout https://perlwikipedia.googlecode.com/svn/trunk/ perlwikibot --username $username
+user@host:~$ svn checkout https://perlwikipedia.googlecode.com/svn/ perlwikibot --username $username
 # Enter your password
 # hack hack hack
 user@host:~$ svn diff
@@ -61,7 +61,7 @@ Everyone hates SVN, but sometimes you have to use it. `git-svn` might make using
 
 The perlwikibot repository is quite small (<300 commits as of May 2010), so you should have no problem making your own clone:
 {{{
-user@host:~$ git svn clone --stdlayout --ignore-paths='^wiki' http://perlwikipedia.googlecode.com/svn/ perlwikibot
+user@host:~$ git svn clone http://perlwikipedia.googlecode.com/svn/ perlwikibot
 # wait, wait, wait
 # still waiting, SVN is horrid isn't it?
 # hack hack hack
