@@ -1,0 +1,57 @@
+#summary How to contribute code to the Perlwikipedia project
+#labels Phase-Implementation
+
+= Introduction =
+Perlwikipedia is an open-source project which aims to create a complete framework for rapidly creating and deploying computer programs which can perform common repetitive tasks on MediaWiki wikis. These clients are typically called 'bots' - hence the project name.
+
+You can help fix bugs or add new functionality to the framework. The code is licensed under the GNU General Public License. In short, this means anyone may use the code for any purpose, including commercial use, and including making and distributing modified versions so long as they provide attribution and all derivative versions are also licensed under the GPL.
+
+== Code style ==
+
+Perl code is hard enough to read already, so try to make an effort to write readable code.
+
+=== Comments ===
+Comments should be included wherever the code does something that isn't obvious.
+
+*bad:*
+{{{
+sub foo {
+    my $param = shift; # Take the first param
+    my @args = @_;     # Take the remaining elements, if any
+}
+}}}
+*good:*
+{{{
+sub bar {
+    my $param = shift; # The page to edit
+    my @args  = @_;    # Contains any other settings (for example, whether to mark the edit as minor)
+}
+}}}
+
+=== Perltidy ===
+Perltidy is a code indenter and formatter. You can use it to help clean up your perl code. For perlwikibot, use:
+{{{
+user@host:~$ perltidy -b -syn -ci=4 -cti=0 -pt=2 -sbt=2 -bt=1 -nsfs -vt=0 -vtc=0 -boc -bbs
+}}}
+
+== Committing ==
+=== Getting commit access ===
+Ask ST47 for commit access
+=== Checkout ===
+Find instructions at [https://code.google.com/p/perlwikipedia/source/checkout].
+{{{
+user@host:~$ svn checkout http://perlwikipedia.googlecode.com/svn/trunk/ perlwikibot
+}}}
+=== Commit ===
+Find instructions at [https://code.google.com/p/perlwikipedia/source/checkout]. Your password is available on the _Settings_ tab of your _Profile_ page (link in top-right corner).
+{{{
+svn checkout https://perlwikipedia.googlecode.com/svn/trunk/ perlwikibot --username $username
+# Enter your password
+# hack hack hack
+svn diff
+svn commit
+}}}
+=== Maintaining `./trunk/Changes` ===
+The Changes file is for major things that the user will want to know about. If your commit fixes a bug or adds a feature, update Changes, if you commit fixes formatting, adds documentation, or adds or edits tests, don't bother with the Changes file. The Changes is meant to be a way for a user to see what changed when they update without looking into the repository.
+
+When you fix a bug or add a new feature, add a note to the "unreleased" section in  `./trunk/Changes` _in the same commit_. If there is no "unreleased" section, create one. When the next release is made, the release manager will move all the notes into a release section and create a new section for changes to be added to for the next release.
