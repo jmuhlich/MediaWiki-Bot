@@ -45,13 +45,27 @@ user@host:~$ svn checkout http://perlwikipedia.googlecode.com/svn/trunk/ perlwik
 === Commit ===
 Find instructions at [https://code.google.com/p/perlwikipedia/source/checkout]. Your password is available on the _Settings_ tab of your _Profile_ page (link in top-right corner).
 {{{
-svn checkout https://perlwikipedia.googlecode.com/svn/trunk/ perlwikibot --username $username
+user@host:~$ svn checkout https://perlwikipedia.googlecode.com/svn/trunk/ perlwikibot --username $username
 # Enter your password
 # hack hack hack
-svn diff
-svn commit
+user@host:~$ svn diff
+user@host:~$ svn commit
 }}}
 === Maintaining `./trunk/Changes` ===
 The Changes file is for major things that the user will want to know about. If your commit fixes a bug or adds a feature, update Changes, if you commit fixes formatting, adds documentation, or adds or edits tests, don't bother with the Changes file. The Changes is meant to be a way for a user to see what changed when they update without looking into the repository.
 
 When you fix a bug or add a new feature, add a note to the "unreleased" section in  `./trunk/Changes` _in the same commit_. If there is no "unreleased" section, create one. When the next release is made, the release manager will move all the notes into a release section and create a new section for changes to be added to for the next release.
+
+=== Using `git-svn` ===
+Everyone hates SVN, but sometimes you have to use it. `git-svn` might make using SVN more palatable, though it isn't a cure-all.
+
+The perlwikibot repository is quite small (<300 commits as of May 2010), so you should have no problem making your own clone:
+{{{
+user@host:~$ git svn clone --stdlayout --ignore-paths='^wiki' http://perlwikipedia.googlecode.com/svn/ perlwikibot
+# wait, wait, wait
+# still waiting, SVN is horrid isn't it?
+# hack hack hack
+user@host:~$ git commit ...
+user@host:~$ git svn dcommit
+}}}
+_Don't_ use git branches, SVN doesn't understand them and you'll get useless commit messages like "Merging branch 'feature_branch'" instead of your real commit message.
