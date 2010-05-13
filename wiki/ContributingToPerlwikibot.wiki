@@ -1,5 +1,5 @@
 #summary How to contribute code to the Perlwikipedia project
-#labels Phase-Implementation
+#labels Phase-Implementation,Featured
 
 = Introduction =
 Perlwikipedia is an open-source project which aims to create a complete framework for rapidly creating and deploying computer programs which can perform common repetitive tasks on MediaWiki wikis. These clients are typically called 'bots' - hence the project name.
