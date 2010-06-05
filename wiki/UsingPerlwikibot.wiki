@@ -17,14 +17,14 @@ my $user = 'me';
 my $pass = 'supersecretpassword';
 
 #Create a Perlwikipedia object, and have it automatically log in and configure itself
-my $bot = MediaWiki::Bot->new(
+my $bot = MediaWiki::Bot->new({
     useragent   => 'MediaWiki::Bot 3.0.0 (User:Mike.lifeguard)',
     assert      => 'bot',
     protocol    => 'https',
     host        => 'secure.wikimedia.org',
     path        => 'wikipedia/en/w',
     login_data  => { username => $user, password => $pass },
-);
+});
 
 # Turn debugging on, to see what the bot is doing
 $bot->{debug} = 1;
@@ -57,4 +57,4 @@ sleep 5;
 
 }}}
 
-Visit #perlwikipedia on irc.freenode.net for support.
+Visit `#perlwikipedia` on irc.freenode.net, or email `perlwikibot@googlegroups.com` for support.

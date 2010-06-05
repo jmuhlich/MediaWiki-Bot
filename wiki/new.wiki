@@ -12,13 +12,13 @@ Calling `MediaWiki::Bot->new()` will create a new MediaWiki::Bot object. The has
 
 For example:
 {{{
-my $bot = MediaWiki::Bot->new(
+my $bot = MediaWiki::Bot->new({
     useragent   => 'MediaWiki::Bot 3.0.0 (User:Mike.lifeguard)',
     assert      => 'bot',
     protocol    => 'https',
     host        => 'secure.wikimedia.org',
     path        => 'wikipedia/meta/w',
     login_data  => { username => "Mike's bot account", password => "password" },
-);
+});
 }}}
 

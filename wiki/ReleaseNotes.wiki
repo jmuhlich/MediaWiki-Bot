@@ -1,7 +1,7 @@
 *Important note*
-This release includes breaking changes. These release notes will guide you through the process of updating your calling code.
+This release includes breaking changes compared to the 2.x series. These release notes will guide you through the process of updating your calling code.
 ----
-The 3.0 release marks a major transition. For starters, all methods use the API where possible. This means that return formats have changed in some cases. Likewise, some method calls have changed. Some of these still accept a backward-compatible form; this will be noted where applicable.
+The 3.0 and 3.1 releases mark a major transition. For starters, all methods use the API where possible. This means that return formats have changed in some cases. Likewise, some method calls have changed. Some of these still accept a backward-compatible form; this will be noted where applicable.
 
 ==Breaking changes==
 *Overview*
