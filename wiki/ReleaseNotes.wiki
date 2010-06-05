@@ -5,15 +5,16 @@ The 3.0 release marks a major transition. For starters, all methods use the API 
 
 ==Breaking changes==
 *Overview*
-* `get_text()` now returns the page's wikitext. Blank pages return `""`; nonexistent pages return `undef`. These both evaluate to false; you can differentiate between them with `defined()`. `get_id()` now returns `undef` instead of `2` when there is no pageid (page is nonexistent or title is invalid).
-* All subs return `undef` when they encounter an error that is passed off to `_handle_api_error()`. Error details are still available in `$bot->{'error'}`.
-* `linksearch()` now uses keys `url` and `title` like the API does. This is to avoid confusion when using a callback hook, which is now exposed to callers. `linksearch()` now uses the API.
-* `login()`'s return values are reversed, and properly documented. Returns true for success; false for failure:
+
+ * `get_text()` now returns the page's wikitext. Blank pages return `""`; nonexistent pages return `undef`. These both evaluate to false; you can differentiate between them with `defined()`. `get_id()` now returns `undef` instead of `2` when there is no pageid (page is nonexistent or title is invalid).
+ * All subs return `undef` when they encounter an error that is passed off to `_handle_api_error()`. Error details are still available in `$bot->{'error'}`.
+ * `linksearch()` now uses keys `url` and `title` like the API does. This is to avoid confusion when using a callback hook, which is now exposed to callers. `linksearch()` now uses the API.
+ * `login()`'s return values are reversed, and properly documented. Returns true for success; false for failure:
 {{{
 $bot->login($user, $pass) or die "Login failed\n"; # This is in accord with Perl standards
 }}}
-* `what_links_here()` no longer handles transclusions. To get transclusions, use `list_transclusions()`. Also, key names are now `title` and `redirect` (defined when the page is a redirect; undefined otherwise).
-* `update_rc()` now accepts a hashref of options, and the hash structure returned is changed.
+ * `what_links_here()` no longer handles transclusions. To get transclusions, use `list_transclusions()`. Also, key names are now `title` and `redirect` (defined when the page is a redirect; undefined otherwise).
+ * `update_rc()` now accepts a hashref of options, and the hash structure returned is changed.
 
 ===All methods===
 *Overview*
