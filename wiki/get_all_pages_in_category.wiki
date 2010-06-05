@@ -1,3 +1,9 @@
 ==get_all_pages_in_category($category_name)==
 
-Returns an array containing the names of ALL pages in the specified category, including sub-categories up to a depth of one sub-category.
+Returns an array containing the names of all pages in the specified category (include Category: prefix). Recurse into sub-categories (one level deep).
+
+{{{
+my @pages = $bot->get_all_pages_in_category("Category:People on stamps of Gabon");
+print "The pages in Category:People on stamps of Gabon are:\n@pages\n";
+}}}
+

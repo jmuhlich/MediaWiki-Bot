@@ -1,3 +1,16 @@
-==set_wiki($wiki_host,$wiki_path)==
+==set_wiki($host[,$path[,$protocol]])==
 
-set_wiki will cause the Perlwikipedia object to use the wiki specified, e.g set_wiki('de.wikipedia.org','w') will tell Perlwikipedia to use http://de.wikipedia.org/w/index.php. Perlwikipedia's default settings are 'en.wikipedia.org' with a path of 'w'.
+Set what wiki to use. `$host` is the domain name (en.wikipedia.org); `$path` is the path before api.php (usually 'w'); `$protocol` is either 'http' or 'https'. For example:
+{{{
+$bot->set_wiki('de.wikipedia.org', 'w');
+}}}
+
+will tell it to use http://de.wikipedia.org/w/index.php. The default settings are 'en.wikipedia.org' with a path of 'w'. You can also pass a hashref using keys with the same names as these parameters. To use the secure server:
+{{{
+$bot->set_wiki(
+    protocol    => 'https',
+    host        => 'secure.wikimedia.org',
+    path        => 'wikipedia/meta/w',
+);
+}}}
+

@@ -1,0 +1,18 @@
+==list_transclusions($page[,$filter[,$ns[,$options]]])==
+
+Returns an array containing a list of all pages *transcluding* `$page`. The array structure contains 'title' and 'redirect' is defined if the title is a redirect. `$filter` can be one of: all (default), redirects (list only redirects), nonredirects (list only non-redirects). `$ns` is a namespace number to search (pass an arrayref to search in multiple namespaces). `$options` is a hashref as described by `MediaWiki::API`: Set `max` to limit the number of queries performed. Set `hook` to a subroutine reference to use a callback hook for incremental processing. Refer to the section on `linksearch()` or what_links_here() for examples.
+
+A typical query:
+{{{
+$bot->list_transclusions("Template:Tlx", undef, 4, {hook => \&mysub});
+sub mysub{
+    my ($res) = @_;
+    foreach my $hash (@$res) {
+        my $title = $hash->{'title'};
+        my $is_redir = $hash->{'redirect'};
+        print "Redirect: $title\n" if $is_redir;
+        print "Page: $title\n" unless $is_redir;
+    }
+}
+}}}
+

@@ -1,3 +1,9 @@
 ==get_pages_in_category($category_name)==
 
-Returns an array containing the names of all pages in the specified category. Does not go into sub-categories.
+Returns an array containing the names of all pages in the specified category (include Category: prefix). Does not recurse into sub-categories.
+
+{{{
+my @pages = $bot->get_pages_in_category("Category:People on stamps of Gabon");
+print "The pages in Category:People on stamps of Gabon are:\n@pages\n";
+}}}
+

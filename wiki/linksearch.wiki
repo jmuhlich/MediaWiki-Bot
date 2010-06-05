@@ -1,0 +1,29 @@
+==linksearch($link[,$ns[,$protocol[,$options]]])==
+
+Runs a linksearch on the specified link and returns an array containing anonymous hashes with keys 'url' for the outbound URL, and 'title' for the page the link is on. `$ns` is a namespace number to search (pass an arrayref to search in multiple namespaces). You can search by `$protocol` (http is default). The optional `$options` hashref is fully documented in `MediaWiki::API`: Set `max` to limit the number of queries performed. Set `hook` to a subroutine reference to use a callback hook for incremental processing.
+
+Set `max` in `$options` to get more than one query's worth of results:
+{{{
+my $options = { max => 10, }; # I only want some results
+my @links = $bot->linksearch("slashdot.org", 1, undef, $options);
+foreach my $hash (@links) {
+    my $url = $hash->{'url'};
+    my $page = $hash->{'title'};
+    print "$page: $url\n";
+}
+}}}
+
+You can also specify a callback function in `$options`:
+{{{
+my $options = { hook => \&mysub, }; # I want to do incremental processing
+$bot->linksearch("slashdot.org", 1, undef, $options);
+sub mysub {
+    my ($res) = @_;
+    foreach my $hashref (@$res) {
+        my $url  = $hashref->{'url'};
+        my $page = $hashref->{'title'};
+        print "$page: $url\n";
+    }
+}
+}}}
+

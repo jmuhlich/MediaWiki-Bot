@@ -6,33 +6,32 @@
 {{{
 
 #!/usr/bin/perl
-use strict; # 'strict' insists that all variables be declared
+use strict;
+use warnings;
 
-# Call the Perlwikipedia module.
-# Note that the 'p' is capitalized, due to Perl style.
-use Perlwikipedia;
+# Include the MediaWiki::Bot methods in your script.
+use MediaWiki::Bot;
 
 # Username and password. 
-my $user = 'me'; my $pass = 'supersecretpassword';
+my $user = 'me';
+my $pass = 'supersecretpassword';
 
-#Create a Perlwikipedia object
-my $editor=Perlwikipedia->new($user);
-
-# Uncomment below to set the wiki language to 'de' (German)
-# (the default is 'en').
-# Wikipedias in all languages use 'w' as the path:
-# (de.wikipedia.org/w/index.php)
-# $editor->set_wiki('de.wikipedia.org','w');
+#Create a Perlwikipedia object, and have it automatically log in and configure itself
+my $bot = MediaWiki::Bot->new(
+    useragent   => 'MediaWiki::Bot 3.0.0 (User:Mike.lifeguard)',
+    assert      => 'bot',
+    protocol    => 'https',
+    host        => 'secure.wikimedia.org',
+    path        => 'wikipedia/en/w',
+    login_data  => { username => $user, password => $pass },
+);
 
 # Turn debugging on, to see what the bot is doing
-$editor->{debug} = 1;
-
-#Log in. 
-$editor->login($user, $pass);
+$bot->{debug} = 1;
 
 #Pull the wikitext of the Wikipedia Sandbox
 my $article = "Wikipedia:Sandbox";
-my $text=$editor->get_text($article);
+my $text = $bot->get_text($article);
 
 # append something to the text
 $text = $text . "Experimenting a little bit...\n";
@@ -45,7 +44,12 @@ my $is_minor = 0;
 
 # Submit to Wikipedia.
 # Note: This does not warn of edit conflicts, it just overwrites existing text.
-$editor->edit($article, $text, $edit_summary, $is_minor);
+$bot->edit({
+    page    => $article,
+    text    => $text,
+    summary => $edit_summary,
+    is_minor=> $is_minor,
+});
 
 # Take a break (frequent edits are forbidden per bot policy)
 print "Sleep 5\n";

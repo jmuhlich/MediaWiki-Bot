@@ -1,6 +1,26 @@
-==edit($pagename,$page_text,$edit_summary,[$is_minor])==
+==edit($data)==
 
-Edits the specified page $pagename and replaces it with $page_text with an edit summary of $edit_summary, optionally marking the edit as minor if specified.
+Submits an edit, overwriting whatever was there before. Use `get_text()` to get the text first if you want to modify what's there already. `$data` is a hashref of options:
 
+ * `page` is where to put the text
+ * `text` is the text to put
+ * `summary` is the edit summary
+ * `is_minor` is whether to mark the edit as minor
+ * `markasbot` is whether to mark it as a non-bot edit
+ * `assert` adds a specific assertion for this edit only
+ * `section` edits a single section instead of the whole page (use 'new' to add a new section to the bottom; `summary` will be the heading, if provided)
 
+An MD5 hash is sent to guard against data corruption while in transit.
+
+Here's a typical call to `edit()`:
+{{{
+my $text = $bot->get_text('My page');
+$text .= "\n\n* More text\n";
+$bot->edit({
+    page    => 'My page',
+    text    => $text,
+    summary => 'Adding new content',
+    section => 'new',
+});
+}}}
 

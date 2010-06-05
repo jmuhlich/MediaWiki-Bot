@@ -1,3 +1,19 @@
-==what_links_here($pagename)==
+==what_links_here($page[,$filter[,$ns[,$options]]])==
 
-Returns an array containing a list of all pages linking to $pagename as anonymous hashes. The hash structure is 'title' and 'type', the type being a 'transclusion', 'redirect', or neither.
+Returns an array containing a list of all pages *linking to* `$page`. The array structure contains 'title' and 'redirect' is defined if the title is a redirect. `$filter` can be one of: all (default), redirects (list only redirects), nonredirects (list only non-redirects). `$ns` is a namespace number to search (pass an arrayref to search in multiple namespaces). `$options` is a hashref as described by `MediaWiki::API`: Set `max` to limit the number of queries performed. Set `hook` to a subroutine reference to use a callback hook for incremental processing. Refer to the section on `linksearch()` for examples.
+
+A typical query:
+{{{
+my @links = $bot->what_links_here("Meta:Sandbox", undef, 1, {hook=>\&mysub});
+sub mysub{
+    my ($res) = @_;
+    foreach my $hash (@$res) {
+        my $title = $hash->{'title'};
+        my $is_redir = $hash->{'redirect'};
+        print "Redirect: $title\n" if $is_redir;
+        print "Page: $title\n" unless $is_redir;
+    }
+}
+}}}
+
+Transclusions are no longer handled by `what_links_here()` - use `list_transcludes()` instead.

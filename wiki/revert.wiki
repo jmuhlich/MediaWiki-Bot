@@ -1,3 +1,10 @@
-==revert($pagename,$edit_summary,$old_revision_id)==
+revert($pagename, $revid[,$summary])
 
-Reverts $pagename to $old_revision_id, with an edit summary of $edit_summary.
+Reverts the specified page to `$revid`, with an edit summary of `$summary`. A default edit summary will be used if `$summary` is omitted.
+
+{{{
+my $revid = $bot->get_last("User:Mike.lifeguard/sandbox", "Mike.lifeguard");
+print "Reverting to $revid\n" if defined($revid);
+$bot->revert('User:Mike.lifeguard', $revid, 'rvv');
+}}}
+

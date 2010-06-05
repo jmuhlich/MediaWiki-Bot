@@ -68,4 +68,6 @@ user@host:~$ git svn clone http://perlwikipedia.googlecode.com/svn/ perlwikibot
 user@host:~$ git commit ...
 user@host:~$ git svn dcommit
 }}}
-_Don't_ use git branches, SVN doesn't understand them and you'll get useless commit messages like "Merging branch 'feature_branch'" instead of your real commit message.
+_Don't_ use git branches, SVN doesn't understand them and you'll get useless commit messages like "Merging branch 'feature_branch'" instead of your real commit message. If you figure out how to make git branches and SVN play nicely, update this page!
+
+Mike pushes his git repo to [http://github.com/mikelifeguard/perlwikibot github]; do with it what you will.

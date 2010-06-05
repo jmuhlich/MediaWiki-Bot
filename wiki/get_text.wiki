@@ -1,3 +1,9 @@
 ==get_text($pagename,[$revid,$section_number])==
 
-Returns the text of the specified page. If $revid is defined, it will return the text of that revision; if $section_number is defined, it will return the text of that section.
+Returns an the wikitext of the specified page. If `$revid` is defined, it will return the text of that revision; if `$section_number` is defined, it will return the text of that section. A blank page will return wikitext of "" (which evaluates to false in Perl, but is defined); a nonexistent page will return undef (which also evaluates to false in Perl, but is obviously undefined). You can distinguish between blank and nonexistent by using `defined()`:
+
+{{{
+my $wikitext = $bot->get_text('Page title');
+print "Wikitext: $wikitext\n" if defined $wikitext;
+}}}
+

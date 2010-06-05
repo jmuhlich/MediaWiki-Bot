@@ -1,7 +1,24 @@
-#summary Documentation of the new() function
+==new($data_hashref)==
+Calling `MediaWiki::Bot->new()` will create a new MediaWiki::Bot object. The hashref is as follows:
 
-The new() method allows you to create a new perlwikipedia object. It is used like this:
+ * `agent` sets a custom useragent. This should consist of the software used, the operator, and a link to contact information. For example, `MediaWiki::Bot 3.0.0 (http://meta.wikimedia.org/wiki/User:Mike.lifeguard)`
+ * `assert` sets a parameter for the AssertEdit extension (commonly 'bot'). Refer to http://mediawiki.org/wiki/Extension:AssertEdit
+ * `operator` allows the bot to send you a message when it fails an assert, and will be integrated into the default useragent (which may not be used if you set agent yourself). The message will tell you that `$useragent` is logged out, so use a descriptive one if you set it.
+ * `maxlag` allows you to set the maxlag parameter (default is the recommended 5s). Please refer to the MediaWiki documentation prior to changing this from the default.
+ * `protocol` allows you to specify 'http' or 'https' (default is 'http'). This is commonly used with the domain and path settings below.
+ * `host` sets the domain name of the wiki to connect to.
+ * `path` sets the path to api.php (with no trailing slash).
+ * `login_data` is a hashref of data to pass to login(). See that section for a description.
+
+For example:
 {{{
-my $user='myusername';
-my $object=Perlwikipedia->new($user);
+my $bot = MediaWiki::Bot->new(
+    useragent   => 'MediaWiki::Bot 3.0.0 (User:Mike.lifeguard)',
+    assert      => 'bot',
+    protocol    => 'https',
+    host        => 'secure.wikimedia.org',
+    path        => 'wikipedia/meta/w',
+    login_data  => { username => "Mike's bot account", password => "password" },
+);
 }}}
+

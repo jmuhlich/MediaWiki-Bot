@@ -1,3 +1,22 @@
 ==login($username,[$password])==
 
-Logs the Perlwikipedia object into the specified wiki. If the login was a success, it will return 'Success', otherwise it returns an error message specifying why the login failed. If $password is not specified, the Perlwikipedia object will try to load the login data from a  saved cookies file.
+Logs the use $username in, optionally using $password. First, an attempt will be made to use cookies to log in. If this fails, an attempt will be made to use the password provided to log in, if any. If the login was successful, returns true; false otherwise.
+
+It is usually more convenient to give login data to the constructor instead.
+
+{{{
+$bot->login(
+    {
+        username => $username,
+        password => $password,
+    }
+) or die "Login failed";
+}}}
+
+Once logged in, attempt to do some simple auto-configuration. At present, this consists of:
+
+ * Warning if the account doesn't have the bot flag, and isn't a sysop account.
+ * Setting the use of apihighlimits if the account has that userright.
+ * Setting an appropriate default assert.
+
+Set `autoconfig => 0` to skip autoconfiguration.

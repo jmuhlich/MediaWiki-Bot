@@ -1,3 +1,28 @@
 ==purge_page($pagename)==
 
-Purges the server's cache of $pagename.
+Purges the server cache of the specified page. Pass an array reference to purge multiple pages. Returns true on success; false on failure. If you really care, a true return value is the number of pages successfully purged. You could check that it is the same as the number you wanted to purge.- maybe some pages don't exist, or you passed invalid titles, or you aren't allowed to purge the cache:
+
+{{{
+my @to_purge = ('Main Page', 'A', 'B', 'C', 'Very unlikely to exist');
+my $size = scalar @to_purge;
+
+print "all-at-once:\n";
+my $success = $bot->purge_page(\@to_purge);
+
+if ($success == $size) {
+    print "@to_purge: OK ($success/$size)\n";
+}
+else {
+    my $missed = @to_purge - $success;
+    print "We couldn't purge $missed pages (list was: "
+        . join(', ', @to_purge)
+        . ")\n";
+}
+
+# OR
+print "\n\none-at-a-time:\n";
+foreach my $page (@to_purge) {
+    my $ok = $bot->purge_page($page);
+    print "$page: $ok\n";
+}
+}}}
