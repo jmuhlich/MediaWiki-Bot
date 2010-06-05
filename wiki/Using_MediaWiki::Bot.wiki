@@ -12,7 +12,7 @@ use warnings;
 # Include the MediaWiki::Bot methods in your script.
 use MediaWiki::Bot;
 
-# Username and password. 
+# Username and password.
 my $user = 'me';
 my $pass = 'supersecretpassword';
 
