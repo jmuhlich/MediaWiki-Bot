@@ -1,0 +1,153 @@
+*Important note*
+This release includes breaking changes. These release notes will guide you through the process of updating your calling code.
+----
+The 3.0 release marks a major transition. For starters, all methods use the API where possible. This means that return formats have changed in some cases. Likewise, some method calls have changed. Some of these still accept a backward-compatible form; this will be noted where applicable.
+
+==Breaking changes==
+*Overview*
+* `get_text()` now returns the page's wikitext. Blank pages return `""`; nonexistent pages return `undef`. These both evaluate to false; you can differentiate between them with `defined()`. `get_id()` now returns `undef` instead of `2` when there is no pageid (page is nonexistent or title is invalid).
+* All subs return `undef` when they encounter an error that is passed off to `_handle_api_error()`. Error details are still available in `$bot->{'error'}`.
+* `linksearch()` now uses keys `url` and `title` like the API does. This is to avoid confusion when using a callback hook, which is now exposed to callers. `linksearch()` now uses the API.
+* `login()`'s return values are reversed, and properly documented. Returns true for success; false for failure:
+{{{
+$bot->login($user, $pass) or die "Login failed\n"; # This is in accord with Perl standards
+}}}
+* `what_links_here()` no longer handles transclusions. To get transclusions, use `list_transclusions()`. Also, key names are now `title` and `redirect` (defined when the page is a redirect; undefined otherwise).
+* `update_rc()` now accepts a hashref of options, and the hash structure returned is changed.
+
+===All methods===
+*Overview*
+Nearly all methods now return `undef` on failure.
+
+*Rationale*
+Separating errors from returned data is important. If you require the error code or error details, they are available in `$bot->{'error'}->{'code'}` and `$bot->{'error'}->{'details'}` respectively.
+
+*Impact*
+Any method calls which did not ignore the return value must now check for `undef`.
+
+====Example: `get_text()` and `get_pages()`====
+*Overview*
+These methods now return <code>undef</code> for non-existent pages instead of an error code.
+
+*Impact*
+Any special cases you had for handling error codes must now look for <code>undef</code> instead. Calls involving pages which exist are unaffected.
+
+*new call*
+{{{
+my $text = $bot->get_text('Non-existent page');
+print $text if defined($text);
+
+my @pages = ('Page 1', 'Page 2', 'Page 3');
+my $thing = $bot->get_pages(\@pages);
+foreach my $page (keys %$thing) {
+    my $text = $thing->{$page};
+    print "$text\n" if defined($text);
+}
+}}}
+
+*old-call*
+{{{
+my $text = $bot->get_text('Non-existent page');
+print $text unless ($text eq "2");
+
+my @pages = ('Page 1', 'Page 2', 'Page 3');
+my $thing = $bot->get_pages(\@pages);
+foreach my $page (keys %$thing) {
+    my $text = $thing->{$page};
+    print "$text\n" unless ($text eq "2");
+}
+}}}
+
+===`login()`===
+*Overview*
+This method now returns true on success; false on failure.
+
+*Rationale*
+In Perl, non-zero is true and means success. Even the syscall wrappings in Perl follow this convention.
+
+*Impact*
+All calls to `login()` which checked return values must be updated.
+
+*new-call*
+{{{
+$bot->login({
+    username => "Mike's bot account",
+    password => $password,
+}) or die "Couldn't log in";
+}}}
+
+*old-call*
+{{{
+my $failure = $bot->login("Mike's bot account", $password);
+die "Couldn't log in" if $failure;
+}}}
+
+===`linksearch()`===
+*Overview*
+This method now uses keys `url` and `title`
+
+*Rationale*
+This reduces confusion in cases where the programmer wishes to use a callback hook to do incremental processing. Without this change, accessing data would have been done with two different sets of keys.
+
+*Impact*
+Any call needs to have the key names updated.
+
+*new-call*
+{{{
+my $options = { max => 10, }; # I only want some results
+my @links = $bot->linksearch("slashdot.org", 1, undef, $options);
+foreach my $hash (@links) {
+    my $url = $hash->{'url'};
+    my $page = $hash->{'title'};
+    print "$page: $url\n";
+}
+
+# Use a callback:
+my $options = { hook => \&mysub, }; # I want to do incremental processing
+$bot->linksearch("slashdot.org", 1, undef, $options) or die;
+sub mysub {
+    my ($res) = @_;
+    foreach my $hashref (@$res) {
+        my $url   = $hashref->{'url'};
+        my $title = $hashref->{'title'};
+        print "$title: $url\n";
+    }
+}
+}}}
+
+*old-call*
+{{{
+my @links = $bot->linksearch("slashdot.org", 1) or die;
+foreach my $hashref (@links) {
+    my $link = $hashref->{'link'};
+    my $page = $hashref->{'page'};
+    print "$page: $link\n";
+}
+}}}
+
+===`what_links_here()`===
+*Overview*
+This method now uses keys `title` and `redirect`. It also returns _only_ links (incl. redirects). Transclusions are handled by `list_transclusions()`.
+
+*Rationale*
+This reduces confusion in cases where the programmer wishes to use a callback hook to do incremental processing. Without this change, accessing data would have been done with two different sets of keys.
+
+*Impact*
+Any call to this method needs to be evaluated as to whether it needs to be replaced with or supplemented by a call to `list_transclusions()`. Also, key names must be updated.
+
+*new-call*
+{{{
+my @links = $bot->what_links_here("Meta:Sandbox", undef, 1, {hook=>\&mysub});
+sub mysub{
+    my ($res) = @_;
+    foreach my $hash (@$res) {
+        my $title = $hash->{'title'};
+        my $is_redir = $hash->{'redirect'};
+        print "Redirect: $title\n" if $is_redir;
+        print "Page: $title\n" unless $is_redir;
+    }
+}
+}}}
+
+==Other changes==
+See the `Changes` file for other changes which are non-breaking (for example, new call styles but which are backward-compatible, and new features).
