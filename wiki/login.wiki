@@ -1,16 +1,14 @@
-==login($username,[$password])==
+==login($hashref)==
 
 Logs the use $username in, optionally using $password. First, an attempt will be made to use cookies to log in. If this fails, an attempt will be made to use the password provided to log in, if any. If the login was successful, returns true; false otherwise.
 
 It is usually more convenient to give login data to the constructor instead.
 
 {{{
-$bot->login(
-    {
-        username => $username,
-        password => $password,
-    }
-) or die "Login failed";
+$bot->login({
+    username => $username,
+    password => $password,
+}) or die "Login failed";
 }}}
 
 Once logged in, attempt to do some simple auto-configuration. At present, this consists of:
@@ -20,3 +18,17 @@ Once logged in, attempt to do some simple auto-configuration. At present, this c
  * Setting an appropriate default assert.
 
 Set `autoconfig => 0` to skip autoconfiguration.
+
+If your wiki is protected by basic auth, provide credentials in the hash:
+{{{
+$bot->login({
+    username => $username,
+    password => $password,
+    basic_auth => {
+        netloc => "private.wiki.com:80",
+        realm  => "Authentication Realm",
+        uname  => "Basic auth username",
+        pass   => "Basic auth password",
+    }
+}) or die "couldn't log in";
+}}}
