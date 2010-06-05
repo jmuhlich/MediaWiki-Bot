@@ -1,10 +1,10 @@
 =Where is `api.php`?=
 You *must* know where `api.php` is to properly configure `MediaWiki::Bot`.
 
-# Go to any page in your wiki. [[Main Page]] works nicely.
-# Click the "history" tab.
-# Take everything from `index.php` to the end and replace it by `api.php`
-# If you see the API help documentation, it worked! If not, you should ask for help.
+ # Go to any page in your wiki. `Main Page` works nicely.
+ # Click the "history" tab.
+ # Take everything from `index.php` to the end and replace it by `api.php`
+ # If you see the API help documentation, it worked! If not, you should ask for help.
 
 Given a URL like `http://en.wikipedia.org/w/api.php`:
  * `protocol` is `http`
