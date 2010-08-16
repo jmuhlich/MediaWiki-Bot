@@ -1,17 +1,12 @@
 #labels Phase-Implementation
-To release a new version of MW::B to the CPAN:
+To release a new version of MediaWiki::Bot to the CPAN:
 
  # Perform a code review of all changes since the last major release
  # Ensure that any new functions or major changes are documented
  # Update ./lib/MediaWiki/Bot.pm with the new version number
- # Update ./README with the version number and any changes to dependencies
- # Update ./MANIFEST with any changes
- # Update ./Changes with all changes (including, clearly marked, any breaking changes) since the last release, and update with the version number, release manager, the current SVN revision number, and today's date
- # Update ./Makefile.PL with any changes to dependencies
- # In the repository root, run `perl Makefile.PL`, `make`, and `make test`
+ # Update ./Changes with all changes (including, clearly marked, any breaking changes) since the last release, and update with the version number
+ # In the repository root, run `dzil release`
 
-This is usually the point where, assuming all tests passed, of course, I perform an svn ci, as well as any branching or tagging if necessary
+You'll need Dist::Zilla installed and configured, as well as a PAUSE account to upload the release.
 
-In the repository root, run `make dist` and `make disttest`
-
-Again, assuming all tests passed, you should have a MediaWiki-Bot-version.tar.gz in the working directory. Upload this to CPAN. You must have a PAUSE account in order to do this, and there is a fancy cpan-upload script on CPAN that makes this step easy.
+This is usually the point where you might perform an svn ci, as well as any branching or tagging if necessary.
