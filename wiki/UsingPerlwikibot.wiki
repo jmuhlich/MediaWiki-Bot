@@ -18,42 +18,28 @@ my $pass = 'supersecretpassword';
 
 #Create a Perlwikipedia object, and have it automatically log in and configure itself
 my $bot = MediaWiki::Bot->new({
-    useragent   => 'MediaWiki::Bot 3.0.0 (User:Mike.lifeguard)',
-    assert      => 'bot',
     protocol    => 'https',
     host        => 'secure.wikimedia.org',
     path        => 'wikipedia/en/w',
     login_data  => { username => $user, password => $pass },
+    debug       => 1, # Turn debugging on, to see what the bot is doing
 });
 
-# Turn debugging on, to see what the bot is doing
-$bot->{debug} = 1;
-
 #Pull the wikitext of the Wikipedia Sandbox
-my $article = "Wikipedia:Sandbox";
+my $article = 'Wikipedia:Sandbox';
 my $text = $bot->get_text($article);
 
 # append something to the text
 $text = $text . "Experimenting a little bit...\n";
-
-my $edit_summary='A bot test';
-
-# Whether to check the minor edit box.
-# One has $is_minor == 1 for minor edits. This argument is optional.
-my $is_minor = 0;
 
 # Submit to Wikipedia.
 # Note: This does not warn of edit conflicts, it just overwrites existing text.
 $bot->edit({
     page    => $article,
     text    => $text,
-    summary => $edit_summary,
-    is_minor=> $is_minor,
+    summary => 'A bot test edit',
+    is_minor=> 0, # not a minor edit
 });
-
-# Take a break (frequent edits are forbidden per bot policy)
-print "Sleep 5\n";
-sleep 5;
 
 }}}
 
