@@ -2967,7 +2967,6 @@ sub import_xml {
     my $xml_filename = shift;
 
     my ($token) = $self->_get_token(undef, 'import');
-    print STDERR "token=$token\n";
     my $hash = {
         action => 'import',
         token  => $token,
