@@ -640,7 +640,7 @@ sub edit {
     $is_minor  = 1 unless defined($is_minor);
     $markasbot = 1 unless defined($markasbot);
 
-    my ($edittoken, $lastedit, $tokentime) = $self->_get_edittoken($page);
+    my ($edittoken, $lastedit, $tokentime) = $self->_get_token($page);
     return $self->_handle_api_error() unless $edittoken;
 
     my $hash = {
@@ -1028,7 +1028,7 @@ sub undo {
     my $after   = shift;
     $summary = "Reverting edits between #$revid & #$after" if defined($after);    # Is that clear? Correct?
 
-    my ($edittoken, $basetimestamp, $starttimestamp) = $self->_get_edittoken($page);
+    my ($edittoken, $basetimestamp, $starttimestamp) = $self->_get_token($page);
     my $hash = {
         action         => 'edit',
         title          => $page,
@@ -2807,7 +2807,7 @@ sub patrol {
         return @return;
     }
     else {
-        my ($token) = $self->_get_edittoken();
+        my ($token) = $self->_get_token();
         my $res = $self->{api}->api({
                 action => 'patrol',
                 rcid   => $rcid,
@@ -2849,7 +2849,7 @@ sub email {
         $user =~ s/^$user_ns_name://;
     }
 
-    my ($token) = $self->_get_edittoken();
+    my ($token) = $self->_get_token();
     my $res = $self->{api}->api({
         action  => 'emailuser',
         target  => $user,
@@ -2957,7 +2957,7 @@ sub contributions {
 # Internal use #
 ################
 
-sub _get_edittoken { # Actually returns ($edittoken, $basetimestamp, $starttimestamp)
+sub _get_token { # Actually returns ($token, $basetimestamp, $starttimestamp)
     my $self = shift;
     my $page = shift || 'Main Page';
     my $type = shift || 'edit';
@@ -2970,10 +2970,10 @@ sub _get_edittoken { # Actually returns ($edittoken, $basetimestamp, $starttimes
     }) or return $self->_handle_api_error();
 
     my $data           = ( %{ $res->{query}->{pages} })[1];
-    my $edittoken      = $data->{edittoken};
+    my $token          = $data->{$type . 'token'};    # e.g. edittoken, importtoken
     my $tokentimestamp = $data->{starttimestamp};
     my $basetimestamp  = $data->{revisions}[0]->{timestamp};
-    return ($edittoken, $basetimestamp, $tokentimestamp);
+    return ($token, $basetimestamp, $tokentimestamp);
 }
 
 sub _handle_api_error {
