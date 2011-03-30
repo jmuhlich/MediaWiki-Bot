@@ -11,7 +11,7 @@ use Carp;
 use URI::Escape qw(uri_escape_utf8);
 use Digest::MD5 2.39 qw(md5_hex);
 use Encode qw(encode_utf8);
-use MediaWiki::API 0.35;
+use MediaWiki::API 0.35; # FIXME require version with api() upload patch, when released
 
 use Module::Pluggable search_path => [qw(MediaWiki::Bot::Plugin)], 'require' => 1;
 foreach my $plugin (__PACKAGE__->plugins) {
@@ -2951,6 +2951,32 @@ sub contributions {
     return 1 if (!ref $res);    # Not a ref when using callback
 
     return $res; # Can we make this more useful?
+}
+
+=head2 import_xml
+
+    $bot->import_xml('wiki_dump.xml');
+
+Imports a MediaWiki XML dump file, just like Special:Import.  Returns a
+structure containing information on the pages which were modified.
+
+=cut
+
+sub import_xml {
+    my $self = shift;
+    my $xml_filename = shift;
+
+    my ($token) = $self->_get_token(undef, 'import');
+    print STDERR "token=$token\n";
+    my $hash = {
+        action => 'import',
+        token  => $token,
+        xml    => [$xml_filename],
+    };
+    my $options = { upload => 1 };
+    my $res = $self->{api}->api($hash, $options);
+
+    return $res || _handle_api_error();
 }
 
 ################
